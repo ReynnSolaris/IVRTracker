@@ -13,7 +13,7 @@
       <!--  @Html.EditorFor(model => model.IVRName, "", new { @maxlength=40, @placeholder="Enter IVR Name Here" })-->
     </div>
     <div class="submiting">
-        <input required type="file" (change)="onChange(event)" #IVRFile = "ngModel" [(ngModel)] = "IVRFile" name="IVRFile" id="IVRFile" accept=".wav,.sln"/>
+        <input required type="file" (change)="onChange($event)" #IVRFile = "ngModel" [(ngModel)] = "IVRFile" name="IVRFile" id="IVRFile" accept=".wav,.sln"/>
         <!--<div *ngIf = "IVRFile.errors && IVRFile.errors['required']" class="alert-danger">No File was selected!</div> -->
         <button type="submit" name="button" (click)="onUpload()">Upload</button>
     </div>
