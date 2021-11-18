@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -8,7 +8,7 @@ import {Observable} from 'rxjs';
 export class FileUploadService {
 
   // API url
-  baseApiUrl = "https://file.io"
+  baseApiUrl = "http://localhost:64643/Test"
 
   constructor(private http:HttpClient) { }
 
@@ -17,7 +17,6 @@ export class FileUploadService {
 
       // Create form data
       const formData = new FormData();
-
       // Store form name as "file" with file data
       formData.append("file", file, file.name);
 

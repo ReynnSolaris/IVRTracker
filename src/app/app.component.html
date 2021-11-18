@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-
+<!DOCTYPE html><router-outlet></router-outlet>
 <html>
 <head>
     <title>IVR Management Tool</title>
@@ -52,14 +51,14 @@
         </div>
         <ul class="nav_list">
             <li>
-                <a href="~/IVR/Index">
+                <a [routerLink]="['/dashboard']">
                     <i class="bx bx-grid-alt"></i>
                     <span class="links_name">Dashboard</span>
                     <span class='tooltip'>Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="~/Admin/Index">
+                <a href="/">
                     <i class="bx bxs-user-badge"></i>
                     <span class="links_name">Admin Panel</span>
                     <span class='tooltip'>Administration</span>
@@ -69,3 +68,4 @@
     </div>
 </body>
 </html>
+<router-outlet></router-outlet>

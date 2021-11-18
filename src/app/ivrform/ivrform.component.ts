@@ -25,9 +25,9 @@ export class IVRFormComponent {
         this.loading = !this.loading;
         console.log(this.file);
         this.fileUploadService.upload(this.file).subscribe(
-            (event: any) => {
-                if (typeof (event) === 'object') {
-                    this.shortLink = event.link;
+            (leftnut: any) => {
+                if (typeof (leftnut) === 'object') {
+                    this.shortLink = leftnut.link;
                     this.loading = false;
                 }
             }
