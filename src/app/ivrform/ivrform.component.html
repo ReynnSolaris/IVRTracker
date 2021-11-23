@@ -1,21 +1,43 @@
 <div class="uploadivr">
-  <form #ivrupload="ngForm" (ngSubmit)="onUpload()  "> <!--(ngSubmit)=""-->
+  <form [formGroup]="IVRDebugForm" (ngSubmit)="onUpload()  "> <!--(ngSubmit)=""-->
     <div class="result">
 
     </div>
     <div class="ivrinfo">
-      <label for="ivrName">IVR Name: </label>
-      <input type="text" name="ivrName" placeholder="Enter IVR Display Name" maxlength=40 ngModel>
+      <div>
+        <label for="ivrName">IVR Name: </label>
+        <input required formControlName="ivrName" type="text" name="ivrName" placeholder="Enter IVR Display Name" maxlength=40 >
+        <pre></pre>
+      </div>
+      <div>
+        <label for="ivrDescription">Description: </label>
+        <input required formControlName="ivrDescription" required type="text" name="ivrDescription" placeholder="Enter IVR Description" maxlength=40 >
+        <pre></pre>
+      </div>
+      <div>
+        <label for="ivrDepartment">Department: </label>
+        <select required formControlName="ivrDepartment" (change)="onChangeDept($event.target)" name="ivrDepartment">
+          <option value="">Choose a Department</option>
+          <option *ngFor="let dept of departments">{{dept}}</option>
+        </select>
+      </div>
       <pre></pre>
-      <label for="ivrDescription">Description: </label>
-      <input required type="text" name="ivrDescription" placeholder="Enter IVR Description" maxlength=40 ngModel>
+      <div>
+        <label for="ivrContract">Contract: </label>
+        <select required formControlName="ivrContract" name="ivrContract">
+          <option value="">Choose a Contract</option>
+          <option *ngFor="let contract of contracts">{{contract}}</option>
+        </select>
+      </div>
+      <pre></pre>
         <!--@Html.LabelFor(model => model.IVRName, new { })-->
       <!--  @Html.EditorFor(model => model.IVRName, "", new { @maxlength=40, @placeholder="Enter IVR Name Here" })-->
     </div>
     <div class="submiting">
-        <input required type="file" (change)="onChange($event)" name="IVRFile" id="IVRFile" accept=".wav,.sln"/>
+        <input formControlName="ivrFile" required type="file" (change)="onChange($event)" name="IVRFile" id="IVRFile" accept=".wav,.sln"/>
         <!--<div *ngIf = "IVRFile.errors && IVRFile.errors['required']" class="alert-danger">No File was selected!</div> -->
-        <button type="submit" name="button">Upload</button>
+        <button [disabled]="!IVRDebugForm.valid" type="submit" name="button">Upload</button>
+        <br><label class = "{{IVRDebugForm.controls['alert'].value}}">{{IVRDebugForm.controls['successMessage'].value}}</label>
     </div>
   </form>
 </div>

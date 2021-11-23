@@ -1,0 +1,86 @@
+<router-outlet></router-outlet>
+<!--
+@{
+    // For Later lol ;P
+    // Response.Write("<script language='javascript'>window.alert('You currently do not have access to this menu.');window.location.pathname='/IVR/Index';</script>");
+}
+<!-- Debug Uploading -->
+<div class="debugzone">
+    <div class="top">
+        <div class="title">IVR Debugging Station</div>
+        <app-ivrform></app-ivrform>
+    </div>
+</div>
+<!-- Debug Viewing of IVR Table -->
+<div class="ivrtable">
+  <pre></pre>
+  <span style="text-align: right; text-shadow: #000 0px 0px 4px; padding-left: 50%; color: #ddd; font-weight: bold; font-size: 24px;">Current IVR's</span>
+  <pre></pre>
+  <form [formGroup]="ivrTableForm">
+    <table >
+      <thead>
+        <tr class="top">
+            <th scope="col">IVR Name</th>
+            <th scope="col">Department</th>
+            <th scope="col">Client</th>
+            <th scope="col">Description</th>
+            <th class="active" scope="col">Enabled/Disabled</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody formArrayName="ivrsArray">
+      <tr *ngFor="let ivrInfo of ivrsArray.controls; let i=index" class="item">
+        <td class="name">{{ivrInfo.value['ivrName']}}</td>
+        <td class="department">{{ivrInfo.value['ivrDepartment']}}</td>
+        <td class="contract">{{ivrInfo.value['ivrContract']}}</td>
+        <td class="description">{{ivrInfo.value['ivrDescription']}}</td>
+        <div *ngIf="ivrInfo.value['ivrEnabled']">
+           <td class="Enabled">
+             Enabled
+             <input type="checkbox" (change)="updateIVRState(ivrInfo.value['id'], i)" id="toggleIVR" value = "enabled" checked>
+           </td>
+           </div>
+           <div *ngIf="!ivrInfo.value['ivrEnabled']">
+             <td class="Disabled">
+               Disabled
+               <input type="checkbox" (change)="updateIVRState(ivrInfo.value['id'], i)" id="toggleIVR" value = "enabled">
+             </td>
+           </div>
+          <td class="edit">
+            <button routerLink="editivr/{{ivrInfo.value['id']}}" class ="editButton">
+              <i class='bx bxs-pencil'></i>
+            </button>
+          </td>
+          <td class="remove">
+            <button class = "removeButton" (click)="deleteIVR(ivrInfo.value['id'], i)">X</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+</div>
+<!-- SideBar -->
+<div class="sidebar">
+    <div class="logo_content">
+        <div class="logo">
+            <i class="bx bxs-user-badge"></i>
+            <div class="logo_name">Administration Panel</div>
+        </div>
+    </div>
+    <ul class="nav_list">
+        <li>
+            <a routerLink="editivr">
+                <i class="bx bx-grid-alt"></i>
+                <span class="links_name">Dashboard</span>
+                <span class='tooltip'>Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="/">
+                <i class="bx bxs-user-badge"></i>
+                <span class="links_name">Admin Panel</span>
+                <span class='tooltip'>Administration</span>
+            </a>
+        </li>
+    </ul>
+</div>

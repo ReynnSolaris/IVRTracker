@@ -1,5 +1,17 @@
 .alert-danger {
   color: #ff4040;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: lighter;
+  text-transform: lowercase;
+  font-style: italic;
   text-shadow: #000 0px 1px 8px;
+}
+
+.alert-clear {
+  color: #40ff40;
+  font-size: 16px;
+  font-weight: lighter;
+  text-transform: lowercase;
+  font-style: italic;
+  text-shadow: #fff 0px 1px 8px;
 }
