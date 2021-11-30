@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FileUploadService } from '../file-upload/file-upload.service';
 import { FormsModule, FormBuilder } from '@angular/forms';
+import {HttpClient} from '@angular/common/http';
 import { Validators } from '@angular/forms';
 import { MainappComponent } from '../mainapp/mainapp.component';
 
@@ -9,17 +10,19 @@ import { MainappComponent } from '../mainapp/mainapp.component';
   templateUrl: './ivrform.component.html',
   styleUrls: ['./ivrform.component.css']
 })
-export class IVRFormComponent {
+export class IVRFormComponent implements OnInit  {
   title = 'OutageIVRTracker';
     shortLink: string = "";
     loading: boolean = false;
     file: File;
-    departments: any = ["IT Department", "Testing Environment", "MSO"]
-    ctr = new Map<string, string[]>([
-      ['IT Department', ['test']],
-      ["MSO", ["Texas.gov CHD"]]
+    departments: any = []
+    departmentsMap = new Map<string, string>([
+
     ])
-    constructor(public fb: FormBuilder, private mapp:MainappComponent, private fileUploadService: FileUploadService) { }
+    ctr = new Map<string, string[]>([
+
+    ])
+    constructor(public fb: FormBuilder, private mapp:MainappComponent, private http:HttpClient, private fileUploadService: FileUploadService) { }
 
     IVRDebugForm = this.fb.group({
       ivrName: ['', [Validators.required]],
@@ -37,7 +40,8 @@ export class IVRFormComponent {
     }
 
     get contracts(): string[] | undefined {
-      return this.ctr.get(this.IVRDebugForm.controls['ivrDepartment'].value);
+      var contr = this.IVRDebugForm.controls['ivrDepartment'].value;
+      return this.ctr.get(contr);
     }
 
     onChange(event) {
@@ -52,9 +56,12 @@ export class IVRFormComponent {
                 if (typeof (leftnut) === 'object') {
                     //this.shortLink = leftnut.link;
                     //this.loading = false;
-                    //this.IVRDebugForm.reset();
+                    //
                     var res = JSON.stringify(leftnut);
-                    this.mapp.addIVR(jsonData);
+                    if(leftnut.fallout === "alert-clear") {
+                      this.mapp.addIVR(jsonData);
+                      this.IVRDebugForm.reset();
+                    }
                     this.IVRDebugForm.controls['successMessage'].setValue(leftnut.message);
                     this.IVRDebugForm.controls['alert'].setValue(leftnut.fallout);
                 } else {
@@ -73,5 +80,30 @@ export class IVRFormComponent {
               }, 2000);
             }
         );
+    }
+
+    ngOnInit() {
+      this.http.get(this.mapp.baseApiUrl + "/getdept").subscribe(
+        (leftnut: any) => {
+          for(var i = 0; i < leftnut.length; i++) {
+            var obj = leftnut[i];
+            this.departmentsMap[obj.id] = obj.departmentName;
+            this.departments[i] = obj.departmentName;
+            this.ctr.set(obj.departmentName, []);
+            //ivr.controls['id'].setValue(obj.id);
+            //ivr.controls['ivrName'].setValue(obj.ivrName);
+            //this.ivrsArray.push(ivr);
+          }
+        });
+      this.http.get(this.mapp.baseApiUrl + "/getcontract").subscribe(
+        (leftnut: any) => {
+        for(var i = 0; i < leftnut.length; i++) {
+          var obj = leftnut[i];
+          var deptName = this.departmentsMap[obj.id];
+          var ctrv2 = this.ctr.get(deptName) || [];
+          var length = ctrv2['length'] || 0;
+          ctrv2[length] = obj.contractName;
+        }
+      });
     }
 }

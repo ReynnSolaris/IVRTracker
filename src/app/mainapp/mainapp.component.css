@@ -123,7 +123,6 @@ body {
   position: absolute;
   padding: 0px 5px;
   margin-left: 250px;
-  margin-top: -50px;
   height: 250px;
   width: 400px;
   background: #4a4a4a;
@@ -132,11 +131,11 @@ body {
 }
 
 .ivrtable {
+
   text-align: center;
   position: absolute;
   padding: 0px 5px;
   margin-left: 600px;
-  margin-top: -50px;
   width: 600px;
 }
 
@@ -220,8 +219,8 @@ body {
   position: absolute;
   padding: 0px 5px;
   margin-left: 250px;
-  margin-top: -15px;
-  height: 255px;
+  margin-top: 20px;
+  height: 280px;
   width: 300px;
   background: #4a4a4a;
   color: #000;

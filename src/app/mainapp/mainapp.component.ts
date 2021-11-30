@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
@@ -12,7 +12,7 @@ export class MainappComponent implements OnInit {
 
 
 
-  constructor(private http:HttpClient, private fb:FormBuilder) { }
+  constructor(private http:HttpClient, private cd:ChangeDetectorRef, private fb:FormBuilder) { }
 
   ivrTableForm = this.fb.group({
     ivrsArray: this.fb.array([
@@ -29,6 +29,7 @@ export class MainappComponent implements OnInit {
       ivrEnabled: [''],
     })
   }
+
   get ivrsArray() {
     return this.ivrTableForm.controls['ivrsArray'] as FormArray;
   }
@@ -80,8 +81,9 @@ export class MainappComponent implements OnInit {
     ivr.controls['ivrDepartment'].setValue(obj.ivrDepartment);
     ivr.controls['ivrContract'].setValue(obj.ivrContract);
     ivr.controls['ivrDescription'].setValue(obj.ivrDescription);
-    ivr.controls['ivrEnabled'].setValue(1);
+    ivr.controls['ivrEnabled'].setValue(0);
     this.ivrsArray.push(ivr);
+    window.location.reload();
   }
 
   ngOnInit(): void {
