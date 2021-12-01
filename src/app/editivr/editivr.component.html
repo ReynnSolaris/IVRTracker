@@ -1,6 +1,31 @@
 <div class="main">
   <div class="inside">
-
+    <div class="rainbow_text_shadow">
+      IVR Editing Tool
+    </div>
+    <div class="item item-small">
+      Currently Editting ID: {{ivrId}}
+    </div>
+    <hr>
+    <form [formGroup]="IVREdit" (ngSubmit)="onUpdate()"  >
+      <div class ="item">
+        <label for="ivrName">Name: </label>
+        <input required formControlName="ivrName" type="text" name="ivrName" placeholder="Enter IVR Name Here" maxlength=40>
+      </div><pre></pre>
+      <div class ="item">
+        <label for="ivrDescription">Description: </label>
+        <input required formControlName="ivrDescription" type="text" name="ivrDescription" placeholder="Enter IVR Description Here" maxlength=40>
+      </div><pre></pre>
+      <div class ="item">
+        <label for="ivrNotes">Notes: </label><br>
+        <div class="notes">
+            <textarea formControlName="ivrNotes" name="ivrNotes" placeholder="IVR Notes Entered Here" maxlength=4000></textarea>
+        </div>
+      </div><pre></pre>
+      <div class ="item">
+        <button [disabled]="!IVREdit.valid" type="submit" name="button">Update IVR</button>
+      </div><pre></pre>
+    </form>
   </div>
 <!--<h5 class="card-title">Product Id is: {{ivrId}}</h5>-->
 </div>

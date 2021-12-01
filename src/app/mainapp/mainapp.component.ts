@@ -12,7 +12,7 @@ export class MainappComponent implements OnInit {
 
 
 
-  constructor(private http:HttpClient, private cd:ChangeDetectorRef, private fb:FormBuilder) { }
+  constructor(public http:HttpClient, private cd:ChangeDetectorRef, private fb:FormBuilder) { }
 
   ivrTableForm = this.fb.group({
     ivrsArray: this.fb.array([
