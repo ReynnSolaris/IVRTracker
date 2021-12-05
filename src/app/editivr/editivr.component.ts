@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { MainappComponent } from '../mainapp/mainapp.component';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-editivr',
   templateUrl: './editivr.component.html',
@@ -17,22 +19,48 @@ export class EditivrComponent implements OnInit {
     ivrChangelog: this.fb.array([ ])
   });
   baseApiUrl = "http://localhost:64643/"
-  constructor(public fb: FormBuilder, private http:HttpClient, private actRoute: ActivatedRoute) {
+
+  newChangelog() {
+    return this.fb.group({
+      empId: [''],
+      description: [''],
+    })
+  }
+
+  public addChangelog(empId, description) {
+    var changeLog = this.newChangelog();
+    changeLog.controls['empId'].setValue(empId);
+    changeLog.controls['description'].setValue(description);
+    this.ivrChangelog.push(changeLog);
+  }
+
+  constructor(public fb: FormBuilder, private datepipe: DatePipe, private router:Router, private http:HttpClient, private actRoute: ActivatedRoute) {
       this.ivrId = this.actRoute.snapshot.params['id'];
     }
     onUpdate() {
-
+      const formData = new FormData();
+      var date = new Date();
+      let latest_date = this.datepipe.transform(date, 'yyyy-MM-dd | HH:mm:ss zzz');
+      this.addChangelog(58582, "Edited the IVR ("+this.ivrId+") at "+latest_date);
+      var jsonData = JSON.stringify(this.IVREdit.getRawValue());
+      formData.append("json", jsonData);
+      // Make http post request over api
+      // with formData as req
+      this.http.post(this.baseApiUrl + "/updateivr/"+this.ivrId, formData).subscribe();
+      return this.router.navigate(['']);
     }
 
     ngOnInit() {
       this.http.get(this.baseApiUrl + "/getivr/"+this.ivrId).subscribe(
         (leftnut: any) => {
-          console.log(leftnut);
           this.IVREdit.controls['ivrName'].setValue(leftnut.ivrName);
           this.IVREdit.controls['ivrDescription'].setValue(leftnut.ivrDescription);
           this.IVREdit.controls['ivrNotes'].setValue(leftnut.ivrNotes);
-          //this.defaultIVRs = leftnut;
-
+          var jsonData = JSON.parse(leftnut.ivrChangelog);
+          for (var i = 0; i < jsonData.length; i++) {
+            this.addChangelog(jsonData[i]['empId'], jsonData[i]['description']);
+          }
+          //this.IVREdit.controls['ivrChangelog'].setValue();
         });
     }
 

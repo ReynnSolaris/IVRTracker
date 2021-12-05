@@ -1,0 +1,32 @@
+<div class="title">
+  Global Changelog
+</div>
+<div class="main">
+  <table>
+    <thead>
+      <tr class="top">
+          <th scope="col">Employee Id</th>
+          <th scope="col">Employee Name</th>
+          <th scope="col">Description</th>
+          <th scope="col"></th>
+      </tr>
+    </thead>
+      <tbody *ngIf="this.getLength != 0">
+      <tr *ngFor="let v of this.IVREdit.controls['ivrChangelog'].value" class="item">
+          <td>{{v.empId}}</td>
+          <td>NO INFO</td>
+          <td>{{v.description}}</td>
+      </tr>
+    </tbody>
+    <div class="dancin" *ngIf="this.getLength == 0">
+      NO CHANGES HAVE BEEN MADE TO THIS IVR
+    </div>
+
+  </table>
+  <div class="backbutton">
+    <button routerLink = "">
+      <i class='bx bx-arrow-back'>Back</i>
+    </button>
+  </div>
+</div>
+<router-outlet></router-outlet>

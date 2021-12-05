@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, debounceTime } from 'rxjs';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
@@ -59,17 +59,30 @@ export class MainappComponent implements OnInit {
     this.ivrsArray.removeAt(index);
   }
 
+
+  blocked = false;
   updateIVRState(id, index) {
-    this.http.post(this.baseApiUrl + "/toggleivr/"+id, null).subscribe();
-    var box = (this.ivrsArray.at(index) as FormGroup);
-    if (box.controls['ivrEnabled'].value == 1) {
-      //box.value['ivrEnabled'].setValue(0);
-      box.controls['ivrEnabled'].setValue(0);
-      console.log('toggled off | ');
-    } else {
-      box.controls['ivrEnabled'].setValue(1);
-      console.log('toggled on');
-    //  box.value['ivrEnabled'].setValue(1);
+    if (!this.blocked) {
+      this.blocked = true;
+      var box = (this.ivrsArray.at(index) as FormGroup);
+      var timeOut = 1000;
+      if (box.controls['ivrContract'].value === "Texas.gov CHD") {
+        timeOut = 3000;
+      }
+      setTimeout(() => {
+        this.blocked = false
+      }, timeOut);
+      this.http.post(this.baseApiUrl + "/toggleivr/"+id, null).pipe(debounceTime(500)).subscribe();
+
+      if (box.controls['ivrEnabled'].value == 1) {
+        //box.value['ivrEnabled'].setValue(0);
+        box.controls['ivrEnabled'].setValue(0);
+        console.log('toggled off | ');
+      } else {
+        box.controls['ivrEnabled'].setValue(1);
+        console.log('toggled on');
+      //  box.value['ivrEnabled'].setValue(1);
+      }
     }
   }
 

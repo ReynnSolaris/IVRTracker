@@ -4,6 +4,7 @@ import { FormsModule, FormBuilder } from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import { Validators } from '@angular/forms';
 import { MainappComponent } from '../mainapp/mainapp.component';
+import { debounce, timer } from 'rxjs';
 
 @Component({
   selector: 'app-ivrform',
@@ -83,7 +84,10 @@ export class IVRFormComponent implements OnInit  {
     }
 
     ngOnInit() {
-      this.http.get(this.mapp.baseApiUrl + "/getdept").subscribe(
+      this.http.get(this.mapp.baseApiUrl + "/getdept").pipe(
+      debounce(
+        () => timer(1000))
+      ).subscribe(
         (leftnut: any) => {
           for(var i = 0; i < leftnut.length; i++) {
             var obj = leftnut[i];
@@ -95,7 +99,10 @@ export class IVRFormComponent implements OnInit  {
             //this.ivrsArray.push(ivr);
           }
         });
-      this.http.get(this.mapp.baseApiUrl + "/getcontract").subscribe(
+      this.http.get(this.mapp.baseApiUrl + "/getcontract").pipe(
+      debounce(
+        () => timer(1000))
+      ).subscribe(
         (leftnut: any) => {
         for(var i = 0; i < leftnut.length; i++) {
           var obj = leftnut[i];

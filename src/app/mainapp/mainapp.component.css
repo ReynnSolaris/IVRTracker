@@ -131,7 +131,6 @@ body {
 }
 
 .ivrtable {
-
   text-align: center;
   position: absolute;
   padding: 0px 5px;
@@ -143,11 +142,11 @@ body {
   table-layout: auto;
   white-space: nowrap;
   border-radius: 6px;
+
   width: 150%;
   background: #4a4a4a;
   color: #000;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  overflow: auto;
   border-collapse: collapse;
 }
 
@@ -163,6 +162,11 @@ body {
   color: #fff;
   padding: 0 10px;
   font-size: 18px;
+}
+
+.ivrtable tbody {
+  overflow-y: scroll;
+  height: 20px;
 }
 
 .ivrtable tbody .item {
@@ -189,11 +193,25 @@ body {
   font-weight: bold;
   color: #fff;
   text-shadow: #000 0px 1px 5px;
+  transition: all 0.25s ease;
 }
 
-.ivrtable .item .remove {
-  padding: 0px 5px;
+.ivrtable .item .changelog .changeLogButton {
+  background-color: #93C47D;
+  border-color: #759c64;
+  font-size: 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: #000 0px 1px 5px;
+  transition: all 0.25s ease;
 }
+
+.ivrtable .item button:hover {
+  transform: scale(1.1);
+  transition: all 0.25s ease;
+}
+
 .ivrtable .item .edit .editButton {
   background-color: #0384fc;
   border-color: #0274ed;
@@ -202,6 +220,7 @@ body {
   font-weight: bold;
   color: #fff;
   text-shadow: #000 0px 1px 5px;
+  transition: all 0.25s ease;
 }
 
 .ivrtable tbody .item .Enabled {

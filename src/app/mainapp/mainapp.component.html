@@ -28,7 +28,7 @@
             <th scope="col"></th>
         </tr>
     </thead>
-    <tbody formArrayName="ivrsArray">
+    <tbody name = "ivrsArray" formArrayName="ivrsArray">
       <tr *ngFor="let ivrInfo of ivrsArray.controls; let i=index" class="item">
         <td class="name">{{ivrInfo.value['ivrName']}}</td>
         <td class="department">{{ivrInfo.value['ivrDepartment']}}</td>
@@ -37,15 +37,20 @@
         <div *ngIf="ivrInfo.value['ivrEnabled']">
            <td class="Enabled">
              Enabled
-             <input type="checkbox" (change)="updateIVRState(ivrInfo.value['id'], i)" id="toggleIVR" value = "enabled" checked>
+             <input [disabled]="blocked" type="checkbox" (change)="updateIVRState(ivrInfo.value['id'], i)" id="toggleIVR" value = "enabled" checked>
            </td>
            </div>
            <div *ngIf="!ivrInfo.value['ivrEnabled']">
              <td class="Disabled">
                Disabled
-               <input type="checkbox" (change)="updateIVRState(ivrInfo.value['id'], i)" id="toggleIVR" value = "enabled">
+               <input [disabled]="blocked"  type="checkbox" (change)="updateIVRState(ivrInfo.value['id'], i)" id="toggleIVR" value = "enabled">
              </td>
            </div>
+           <td class="changelog">
+             <button routerLink="changelog/{{ivrInfo.value['id']}}" class="changeLogButton">
+               <i class='bx bxs-notepad'></i>
+            </button>
+            </td>
           <td class="edit">
             <button routerLink="editivr/{{ivrInfo.value['id']}}" class ="editButton">
               <i class='bx bxs-pencil'></i>
