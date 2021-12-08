@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import { SettingsConf } from '../empstuff/settings';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileUploadService {
 
-  // API url
-  baseApiUrl = "http://localhost:64643/Test"
+  constructor(private http:HttpClient, private s:SettingsConf) { }
 
-  constructor(private http:HttpClient) { }
+  baseApiUrl = this.s.baseApiUrl;
 
   // Returns an observable
   upload(file, jsonData):Observable<any> {
@@ -27,7 +27,7 @@ export class FileUploadService {
       formData.append("json", jsonData)
       // Make http post request over api
       // with formData as req
-      return this.http.post(this.baseApiUrl, formData, httpOptions)
+      return this.http.post(this.baseApiUrl+"/addivr", formData, httpOptions)
     } else {
       return this.http.post("", new FormData());
     }
