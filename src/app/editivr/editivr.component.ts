@@ -5,6 +5,7 @@ import { MainappComponent } from '../mainapp/mainapp.component';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { SettingsConf } from '../empstuff/settings';
 @Component({
   selector: 'app-editivr',
   templateUrl: './editivr.component.html',
@@ -18,7 +19,7 @@ export class EditivrComponent implements OnInit {
     ivrNotes: ['', [Validators.required]],
     ivrChangelog: this.fb.array([ ])
   });
-  baseApiUrl = "http://localhost:64643/"
+
 
   newChangelog() {
     return this.fb.group({
@@ -34,16 +35,17 @@ export class EditivrComponent implements OnInit {
     this.ivrChangelog.push(changeLog);
   }
 
-  constructor(public fb: FormBuilder, private datepipe: DatePipe, private router:Router, private http:HttpClient, private actRoute: ActivatedRoute) {
+  constructor(public fb: FormBuilder, private s:SettingsConf, private datepipe: DatePipe, private router:Router, private http:HttpClient, private actRoute: ActivatedRoute) {
       this.ivrId = this.actRoute.snapshot.params['id'];
     }
+      baseApiUrl = this.s.baseApiUrl;
     onUpdate() {
       const formData = new FormData();
       var date = new Date();
-      let latest_date = this.datepipe.transform(date, 'yyyy-MM-dd | HH:mm:ss zzz');
-      this.addChangelog(58582, "Edited the IVR ("+this.ivrId+") at "+latest_date);
-      var jsonData = JSON.stringify(this.IVREdit.getRawValue());
-      formData.append("json", jsonData);
+    //  let latest_date = this.datepipe.transform(date, 'yyyy-MM-dd | HH:mm:ss zzz');
+      //this.addChangelog(58582, "Edited the IVR ("+this.ivrId+") at "+latest_date);
+      //var jsonData = JSON.stringify(this.IVREdit.getRawValue());
+      //formData.append("json", jsonData);
       // Make http post request over api
       // with formData as req
       this.http.post(this.baseApiUrl + "/updateivr/"+this.ivrId, formData).subscribe();

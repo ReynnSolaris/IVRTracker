@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Validators } from '@angular/forms';
 import { MainappComponent } from '../mainapp/mainapp.component';
 import { debounce, timer, delay  } from 'rxjs';
+import { SettingsConf } from '../empstuff/settings';
 
 @Component({
   selector: 'app-ivrform',
@@ -23,7 +24,7 @@ export class IVRFormComponent implements OnInit  {
     ctr = new Map<string, string[]>([
 
     ])
-    constructor(public fb: FormBuilder, private mapp:MainappComponent, private http:HttpClient, private fileUploadService: FileUploadService) { }
+    constructor(public fb: FormBuilder, private s:SettingsConf, private mapp:MainappComponent, private http:HttpClient, private fileUploadService: FileUploadService) { }
 
     ivrDebugForm = this.fb.group({
       ivrName: ['', [Validators.required]],
@@ -82,7 +83,7 @@ export class IVRFormComponent implements OnInit  {
         );
     }
     ngOnInit() {
-      this.http.get(this.mapp.baseApiUrl + "/getdept").pipe(
+      this.http.get(this.s.baseApiUrl + "/getdept").pipe(
       debounce(
         () => timer(1500))
       ).subscribe(
@@ -99,7 +100,7 @@ export class IVRFormComponent implements OnInit  {
         });
 
 
-      this.http.get(this.mapp.baseApiUrl + "/getcontract").pipe(
+      this.http.get(this.s.baseApiUrl + "/getcontract").pipe(
       delay(500)
       ).subscribe(
         (objectRequest: any) => {

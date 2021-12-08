@@ -11,6 +11,8 @@ import { EditivrComponent } from './editivr/editivr.component';
 import { MainappComponent } from './mainapp/mainapp.component';
 import { ChangelogComponent } from './changelog/changelog.component';
 import { AdminComponent } from './admin/admin.component';
+import { SettingsConf } from './empstuff/settings';
+import { EmployeeGrab } from './empstuff/employeegrab';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,7 @@ import { AdminComponent } from './admin/admin.component';
     EditivrComponent,
     MainappComponent,
     ChangelogComponent,
-    AdminComponent
+    AdminComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,9 +30,12 @@ import { AdminComponent } from './admin/admin.component';
     FormsModule,
     ReactiveFormsModule ,
     HttpClientModule,
+
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    SettingsConf,
+    EmployeeGrab
   ],
   bootstrap: [AppComponent]
 })

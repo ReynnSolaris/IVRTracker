@@ -14,7 +14,7 @@
       <tbody *ngIf="this.getLength != 0">
       <tr *ngFor="let v of this.ivrEdit.controls['ivrChangelog'].value" class="item">
           <td>{{v.empId}}</td>
-          <td>NO INFO</td>
+          <td>{{v.empName}}</td>
           <td>{{v.description}}</td>
       </tr>
     </tbody>

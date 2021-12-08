@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { MainappComponent } from '../mainapp/mainapp.component';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SettingsConf } from '../empstuff/settings';
+import { EmployeeGrab } from '../empstuff/employeegrab';
 @Component({
   selector: 'app-changelog',
   templateUrl: './changelog.component.html',
@@ -15,18 +17,20 @@ export class ChangelogComponent implements OnInit {
     ivrDescription: ['', [Validators.required]],
     ivrChangelog: this.fb.array([ ])
   });
-  baseApiUrl = "http://localhost:64643/"
+
 
   newChangelog() {
     return this.fb.group({
       empId: [''],
+      empName: [''],
       description: [''],
     })
   }
 
-  public addChangelog(empId, description) {
+  public addChangelog(empId, empName, description) {
     var changeLog = this.newChangelog();
     changeLog.controls['empId'].setValue(empId);
+    changeLog.controls['empName'].setValue(empName);
     changeLog.controls['description'].setValue(description);
     this.ivrChangelog.push(changeLog);
   }
@@ -39,10 +43,10 @@ export class ChangelogComponent implements OnInit {
     return this.ivrEdit.controls['ivrChangelog'].value.length;
   }
 
-  constructor(public fb: FormBuilder, private http:HttpClient, private actRoute: ActivatedRoute) {
+  constructor(public fb: FormBuilder, private s:SettingsConf, public emp:EmployeeGrab, private http:HttpClient, private actRoute: ActivatedRoute) {
     this.ivrId = this.actRoute.snapshot.params['id'];
   }
-
+  baseApiUrl = this.s.baseApiUrl;
   ngOnInit(): void {
     this.http.get(this.baseApiUrl + "/getivr/"+this.ivrId).subscribe(
       (objectRequest: any) => {
@@ -50,7 +54,7 @@ export class ChangelogComponent implements OnInit {
         this.ivrEdit.controls['ivrDescription'].setValue(objectRequest.ivrDescription);
         var jsonData = JSON.parse(objectRequest.ivrChangelog);
         for (var i = 0; i < jsonData.length; i++) {
-          this.addChangelog(jsonData[i]['empId'], jsonData[i]['description']);
+          this.addChangelog(jsonData[i]['empId'], "no info", jsonData[i]['description']);
         }
         //this.ivrEdit.controls['ivrChangelog'].setValue();
       });

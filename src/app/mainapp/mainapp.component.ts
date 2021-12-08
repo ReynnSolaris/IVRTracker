@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, debounceTime } from 'rxjs';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { SettingsConf } from '../empstuff/settings';
 
 @Component({
   selector: 'app-mainapp',
@@ -12,7 +13,7 @@ export class MainappComponent implements OnInit {
 
 
 
-  constructor(public http:HttpClient, private cd:ChangeDetectorRef, private fb:FormBuilder) { }
+  constructor(public http:HttpClient, private s:SettingsConf, private cd:ChangeDetectorRef, private fb:FormBuilder) { }
 
   ivrTableForm = this.fb.group({
     ivrsArray: this.fb.array([
@@ -34,7 +35,7 @@ export class MainappComponent implements OnInit {
     return this.ivrTableForm.controls['ivrsArray'] as FormArray;
   }
 
-  baseApiUrl = "http://localhost:64643/"
+  baseApiUrl = this.s.baseApiUrl;
   defaultIVRs = [
     {
       id: "3751384a-1743",
