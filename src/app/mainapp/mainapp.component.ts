@@ -101,9 +101,9 @@ export class MainappComponent implements OnInit {
 
   ngOnInit(): void {
     this.http.get(this.baseApiUrl + "/getallivrs").subscribe(
-      (leftnut: any) => {
-        for(var i = 0; i < leftnut.length; i++) {
-          var obj = leftnut[i];
+      (objectRequest: any) => {
+        for(var i = 0; i < objectRequest.length; i++) {
+          var obj = objectRequest[i];
           var ivr = this.newIVR();
           ivr.controls['id'].setValue(obj.id);
           ivr.controls['ivrName'].setValue(obj.ivrName);
@@ -113,7 +113,7 @@ export class MainappComponent implements OnInit {
           ivr.controls['ivrEnabled'].setValue(obj.ivrEnabled);
           this.ivrsArray.push(ivr);
         }
-        this.defaultIVRs = leftnut;
+        this.defaultIVRs = objectRequest;
 
       });
   }

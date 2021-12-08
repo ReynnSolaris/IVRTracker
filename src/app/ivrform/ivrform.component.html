@@ -1,5 +1,5 @@
 <div class="uploadivr">
-  <form [formGroup]="IVRDebugForm" (ngSubmit)="onUpload()  "> <!--(ngSubmit)=""-->
+  <form [formGroup]="ivrDebugForm" (ngSubmit)="onUpload()  "> <!--(ngSubmit)=""-->
     <div class="result">
 
     </div>
@@ -36,8 +36,8 @@
     <div class="submiting">
         <input formControlName="ivrFile" required type="file" (change)="onChange($event)" name="IVRFile" id="IVRFile" accept=".wav,.sln"/>
         <!--<div *ngIf = "IVRFile.errors && IVRFile.errors['required']" class="alert-danger">No File was selected!</div> -->
-        <button [disabled]="!IVRDebugForm.valid" type="submit" name="button">Upload</button>
-        <br><label class = "{{IVRDebugForm.controls['alert'].value}}">{{IVRDebugForm.controls['successMessage'].value}}</label>
+        <button [disabled]="!ivrDebugForm.valid" type="submit" name="button">Upload</button>
+        <br><label class = "{{ivrDebugForm.controls['alert'].value}}">{{ivrDebugForm.controls['successMessage'].value}}</label>
     </div>
   </form>
 </div>

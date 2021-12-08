@@ -10,7 +10,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ChangelogComponent implements OnInit {
   ivrId: string;
-  IVREdit = this.fb.group({
+  ivrEdit = this.fb.group({
     ivrName: ['', [Validators.required]],
     ivrDescription: ['', [Validators.required]],
     ivrChangelog: this.fb.array([ ])
@@ -32,11 +32,11 @@ export class ChangelogComponent implements OnInit {
   }
 
   get ivrChangelog() {
-    return this.IVREdit.controls['ivrChangelog'] as FormArray;
+    return this.ivrEdit.controls['ivrChangelog'] as FormArray;
   }
 
   get getLength() {
-    return this.IVREdit.controls['ivrChangelog'].value.length;
+    return this.ivrEdit.controls['ivrChangelog'].value.length;
   }
 
   constructor(public fb: FormBuilder, private http:HttpClient, private actRoute: ActivatedRoute) {
@@ -45,14 +45,14 @@ export class ChangelogComponent implements OnInit {
 
   ngOnInit(): void {
     this.http.get(this.baseApiUrl + "/getivr/"+this.ivrId).subscribe(
-      (leftnut: any) => {
-        this.IVREdit.controls['ivrName'].setValue(leftnut.ivrName);
-        this.IVREdit.controls['ivrDescription'].setValue(leftnut.ivrDescription);
-        var jsonData = JSON.parse(leftnut.ivrChangelog);
+      (objectRequest: any) => {
+        this.ivrEdit.controls['ivrName'].setValue(objectRequest.ivrName);
+        this.ivrEdit.controls['ivrDescription'].setValue(objectRequest.ivrDescription);
+        var jsonData = JSON.parse(objectRequest.ivrChangelog);
         for (var i = 0; i < jsonData.length; i++) {
           this.addChangelog(jsonData[i]['empId'], jsonData[i]['description']);
         }
-        //this.IVREdit.controls['ivrChangelog'].setValue();
+        //this.ivrEdit.controls['ivrChangelog'].setValue();
       });
   }
 

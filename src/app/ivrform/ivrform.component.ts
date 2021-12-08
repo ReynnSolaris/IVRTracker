@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FileUploadService } from '../file-upload/file-upload.service';
 import { FormsModule, FormBuilder } from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Validators } from '@angular/forms';
 import { MainappComponent } from '../mainapp/mainapp.component';
-import { debounce, timer } from 'rxjs';
+import { debounce, timer, delay  } from 'rxjs';
 
 @Component({
   selector: 'app-ivrform',
@@ -25,7 +25,7 @@ export class IVRFormComponent implements OnInit  {
     ])
     constructor(public fb: FormBuilder, private mapp:MainappComponent, private http:HttpClient, private fileUploadService: FileUploadService) { }
 
-    IVRDebugForm = this.fb.group({
+    ivrDebugForm = this.fb.group({
       ivrName: ['', [Validators.required]],
       ivrDescription: ['', [Validators.required]],
       ivrDepartment: ['', [Validators.required]],
@@ -36,12 +36,12 @@ export class IVRFormComponent implements OnInit  {
     })
 
     onChangeDept(deptValue) {
-      (this.IVRDebugForm.controls['ivrContract']).setValue('');
-      //console.log(this.IVRDebugForm.controls['ivrDepartment'].value);
+      (this.ivrDebugForm.controls['ivrContract']).setValue('');
+      //console.log(this.ivrDebugForm.controls['ivrDepartment'].value);
     }
 
     get contracts(): string[] | undefined {
-      var contr = this.IVRDebugForm.controls['ivrDepartment'].value;
+      var contr = this.ivrDebugForm.controls['ivrDepartment'].value;
       return this.ctr.get(contr);
     }
 
@@ -50,47 +50,45 @@ export class IVRFormComponent implements OnInit  {
     }
     onUpload() {
         this.loading = !this.loading;
-        var jsonData = JSON.stringify(this.IVRDebugForm.getRawValue());
+        var jsonData = JSON.stringify(this.ivrDebugForm.getRawValue());
         this.fileUploadService.upload(this.file, jsonData).subscribe(
-            (leftnut: any) => {
-              console.log(leftnut);
-                if (typeof (leftnut) === 'object') {
-                    //this.shortLink = leftnut.link;
+            (objectRequest: any) => {
+                if (typeof (objectRequest) === 'object') {
+                    //this.shortLink = objectRequest.link;
                     //this.loading = false;
                     //
-                    var res = JSON.stringify(leftnut);
-                    if(leftnut.fallout === "alert-clear") {
+                    var res = JSON.stringify(objectRequest);
+                    if(objectRequest.fallout === "alert-clear") {
                       this.mapp.addIVR(jsonData);
-                      this.IVRDebugForm.reset();
+                      this.ivrDebugForm.reset();
                     }
-                    this.IVRDebugForm.controls['successMessage'].setValue(leftnut.message);
-                    this.IVRDebugForm.controls['alert'].setValue(leftnut.fallout);
+                    this.ivrDebugForm.controls['successMessage'].setValue(objectRequest.message);
+                    this.ivrDebugForm.controls['alert'].setValue(objectRequest.fallout);
                 } else {
-                  //this.IVRDebugForm.reset();
-                  this.IVRDebugForm.controls['successMessage'].setValue(leftnut);
+                  //this.ivrDebugForm.reset();
+                  this.ivrDebugForm.controls['successMessage'].setValue(objectRequest);
                 }
                 setTimeout(() => {
-                  this.IVRDebugForm.controls['successMessage'].setValue('');
+                  this.ivrDebugForm.controls['successMessage'].setValue('');
                 }, 2000);
             },
             error => {
-              this.IVRDebugForm.controls['successMessage'].setValue('ERROR: Service Unreachable');
-              this.IVRDebugForm.controls['alert'].setValue('alert-danger');
+              this.ivrDebugForm.controls['successMessage'].setValue('ERROR: Service Unreachable');
+              this.ivrDebugForm.controls['alert'].setValue('alert-danger');
               setTimeout(() => {
-                this.IVRDebugForm.controls['successMessage'].setValue('');
+                this.ivrDebugForm.controls['successMessage'].setValue('');
               }, 2000);
             }
         );
     }
-
     ngOnInit() {
       this.http.get(this.mapp.baseApiUrl + "/getdept").pipe(
       debounce(
-        () => timer(1000))
+        () => timer(1500))
       ).subscribe(
-        (leftnut: any) => {
-          for(var i = 0; i < leftnut.length; i++) {
-            var obj = leftnut[i];
+        (objectRequest: any) => {
+          for(var i = 0; i < objectRequest.length; i++) {
+            var obj = objectRequest[i];
             this.departmentsMap[obj.id] = obj.departmentName;
             this.departments[i] = obj.departmentName;
             this.ctr.set(obj.departmentName, []);
@@ -99,13 +97,14 @@ export class IVRFormComponent implements OnInit  {
             //this.ivrsArray.push(ivr);
           }
         });
+
+
       this.http.get(this.mapp.baseApiUrl + "/getcontract").pipe(
-      debounce(
-        () => timer(1000))
+      delay(500)
       ).subscribe(
-        (leftnut: any) => {
-        for(var i = 0; i < leftnut.length; i++) {
-          var obj = leftnut[i];
+        (objectRequest: any) => {
+        for(var i = 0; i < objectRequest.length; i++) {
+          var obj = objectRequest[i];
           var deptName = this.departmentsMap[obj.id];
           var ctrv2 = this.ctr.get(deptName) || [];
           var length = ctrv2['length'] || 0;

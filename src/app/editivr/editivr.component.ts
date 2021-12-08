@@ -52,11 +52,11 @@ export class EditivrComponent implements OnInit {
 
     ngOnInit() {
       this.http.get(this.baseApiUrl + "/getivr/"+this.ivrId).subscribe(
-        (leftnut: any) => {
-          this.IVREdit.controls['ivrName'].setValue(leftnut.ivrName);
-          this.IVREdit.controls['ivrDescription'].setValue(leftnut.ivrDescription);
-          this.IVREdit.controls['ivrNotes'].setValue(leftnut.ivrNotes);
-          var jsonData = JSON.parse(leftnut.ivrChangelog);
+        (objectRequest: any) => {
+          this.IVREdit.controls['ivrName'].setValue(objectRequest.ivrName);
+          this.IVREdit.controls['ivrDescription'].setValue(objectRequest.ivrDescription);
+          this.IVREdit.controls['ivrNotes'].setValue(objectRequest.ivrNotes);
+          var jsonData = JSON.parse(objectRequest.ivrChangelog);
           for (var i = 0; i < jsonData.length; i++) {
             this.addChangelog(jsonData[i]['empId'], jsonData[i]['description']);
           }

@@ -10,7 +10,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class AdminComponent implements OnInit {
   ivrId: string;
-  IVREdit = this.fb.group({
+  ivrEdit = this.fb.group({
     ivrName: ['', [Validators.required]],
     ivrDescription: ['', [Validators.required]],
     ivrChangelog: this.fb.array([ ])
@@ -32,11 +32,11 @@ export class AdminComponent implements OnInit {
   }
 
   get ivrChangelog() {
-    return this.IVREdit.controls['ivrChangelog'] as FormArray;
+    return this.ivrEdit.controls['ivrChangelog'] as FormArray;
   }
 
   get getLength() {
-    return this.IVREdit.controls['ivrChangelog'].value.length;
+    return this.ivrEdit.controls['ivrChangelog'].value.length;
   }
 
   constructor(public fb: FormBuilder, private http:HttpClient, private actRoute: ActivatedRoute) {
@@ -45,12 +45,12 @@ export class AdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.http.get(this.baseApiUrl + "/globalchangelog/").subscribe(
-      (leftnut: any) => {
-        console.log(leftnut);
-        for (var i = 0; i < leftnut.length; i++) {
-          this.addChangelog(leftnut[i]['empId'], leftnut[i]['description']);
+      (objectRequest: any) => {
+        console.log(objectRequest);
+        for (var i = 0; i < objectRequest.length; i++) {
+          this.addChangelog(objectRequest[i]['empId'], objectRequest[i]['description']);
         }
-        //this.IVREdit.controls['ivrChangelog'].setValue();
+        //this.ivrEdit.controls['ivrChangelog'].setValue();
       });
   }
 

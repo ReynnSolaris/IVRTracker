@@ -29,37 +29,40 @@
         </tr>
     </thead>
     <tbody name = "ivrsArray" formArrayName="ivrsArray">
-      <tr *ngFor="let ivrInfo of ivrsArray.controls; let i=index" class="item">
-        <td class="name">{{ivrInfo.value['ivrName']}}</td>
-        <td class="department">{{ivrInfo.value['ivrDepartment']}}</td>
-        <td class="contract">{{ivrInfo.value['ivrContract']}}</td>
-        <td class="description">{{ivrInfo.value['ivrDescription']}}</td>
-        <div *ngIf="ivrInfo.value['ivrEnabled']">
-           <td class="Enabled">
-             Enabled
-             <input [disabled]="blocked" type="checkbox" (change)="updateIVRState(ivrInfo.value['id'], i)" id="toggleIVR" value = "enabled" checked>
-           </td>
-           </div>
-           <div *ngIf="!ivrInfo.value['ivrEnabled']">
-             <td class="Disabled">
-               Disabled
-               <input [disabled]="blocked"  type="checkbox" (change)="updateIVRState(ivrInfo.value['id'], i)" id="toggleIVR" value = "enabled">
+        <tr *ngFor="let ivrInfo of ivrsArray.controls; let i=index" class="item">
+          <td class="name">{{ivrInfo.value['ivrName']}}</td>
+          <td class="department">{{ivrInfo.value['ivrDepartment']}}</td>
+          <td class="contract">{{ivrInfo.value['ivrContract']}}</td>
+          <td class="description">{{ivrInfo.value['ivrDescription']}}</td>
+          <div *ngIf="ivrInfo.value['ivrEnabled']">
+             <td class="Enabled">
+               Enabled
+               <input [disabled]="blocked" type="checkbox" (change)="updateIVRState(ivrInfo.value['id'], i)" id="toggleIVR" value = "enabled" checked>
              </td>
-           </div>
-           <td class="changelog">
-             <button routerLink="changelog/{{ivrInfo.value['id']}}" class="changeLogButton">
-               <i class='bx bxs-notepad'></i>
-            </button>
+             </div>
+             <div *ngIf="!ivrInfo.value['ivrEnabled']">
+               <td class="Disabled">
+                 Disabled
+                 <input [disabled]="blocked"  type="checkbox" (change)="updateIVRState(ivrInfo.value['id'], i)" id="toggleIVR" value = "enabled">
+               </td>
+             </div>
+             <td class="changelog">
+               <button routerLink="changelog/{{ivrInfo.value['id']}}" class="changeLogButton">
+                 <i class='bx bxs-notepad'></i>
+              </button>
+              </td>
+            <td class="edit">
+              <button routerLink="editivr/{{ivrInfo.value['id']}}" class ="editButton">
+                <i class='bx bxs-pencil'></i>
+              </button>
             </td>
-          <td class="edit">
-            <button routerLink="editivr/{{ivrInfo.value['id']}}" class ="editButton">
-              <i class='bx bxs-pencil'></i>
-            </button>
-          </td>
-          <td class="remove">
-            <button class = "removeButton" (click)="deleteIVR(ivrInfo.value['id'], i)">X</button>
-          </td>
-        </tr>
+            <td class="remove">
+              <button class = "removeButton" (click)="deleteIVR(ivrInfo.value['id'], i)">X</button>
+            </td>
+          </tr>
+        <div class="notfound" *ngIf="this.ivrsArray.length == 0">
+          <td>NO IVRS ARE CURRENTLY ACTIVE / MADE</td>
+        </div>
       </tbody>
     </table>
   </form>
