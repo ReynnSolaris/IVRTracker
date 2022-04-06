@@ -44,8 +44,8 @@ export class EditivrComponent implements OnInit {
       var date = new Date();
     //  let latest_date = this.datepipe.transform(date, 'yyyy-MM-dd | HH:mm:ss zzz');
       //this.addChangelog(58582, "Edited the IVR ("+this.ivrId+") at "+latest_date);
-      //var jsonData = JSON.stringify(this.IVREdit.getRawValue());
-      //formData.append("json", jsonData);
+      var jsonData = JSON.stringify(this.IVREdit.getRawValue());
+      formData.append("json", jsonData);
       // Make http post request over api
       // with formData as req
       this.http.post(this.baseApiUrl + "/updateivr/"+this.ivrId, formData).subscribe();
